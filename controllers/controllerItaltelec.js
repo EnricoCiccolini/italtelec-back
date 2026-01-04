@@ -73,45 +73,45 @@ function patchNameImage(req, res) {
 }
 
 function postReview(req, res) {
-    const { id } = req.params;
-    const { name, vote, text } = req.body;
+    // const { id } = req.params;
+    // const { name, vote, text } = req.body;
 
-    let notValid = false;
-    const parsedVote = parseInt(vote);
-    let problem = `dati non validi: `
+    // let notValid = false;
+    // const parsedVote = parseInt(vote);
+    // let problem = `dati non validi: `
 
-    if (!name || !vote) {
-        return res.status(400).json({ error: 'Nome e voto sono richiesti' });
-    }
+    // if (!name || !vote) {
+    //     return res.status(400).json({ error: 'Nome e voto sono richiesti' });
+    // }
 
-    if (isNaN(parsedVote)) {
-        notValid = true;
-        problem += `il valore inserito nel campo vote non è un numero. `
-    }
+    // if (isNaN(parsedVote)) {
+    //     notValid = true;
+    //     problem += `il valore inserito nel campo vote non è un numero. `
+    // }
 
-    if (name.length > 30) {
-        notValid = true;
-        problem += `il nome non può essere lungo più di 30 caratteri. `
-    }
+    // if (name.length > 30) {
+    //     notValid = true;
+    //     problem += `il nome non può essere lungo più di 30 caratteri. `
+    // }
 
-    if (parsedVote < 1 || parsedVote > 5) {
-        notValid = true;
-        problem += `il voto deve essere compreso tra 1 e 5. `
-    }
+    // if (parsedVote < 1 || parsedVote > 5) {
+    //     notValid = true;
+    //     problem += `il voto deve essere compreso tra 1 e 5. `
+    // }
 
-    if (notValid) {
-        return res.status(400).json({ error: problem });
-    }
+    // if (notValid) {
+    //     return res.status(400).json({ error: problem });
+    // }
 
-    let sql = `INSERT INTO reviews (antenna_id, name, vote, text) VALUES (?, ?, ?, ?)`;
+    // let sql = `INSERT INTO reviews (antenna_id, name, vote, text) VALUES (?, ?, ?, ?)`;
 
-    connection.query(sql, [id, name, parsedVote, text], (err) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: err });
-        }
-        res.status(201).json({ message: 'Recensione creata con successo' });
-    });
+    // connection.query(sql, [id, name, parsedVote, text], (err) => {
+    //     if (err) {
+    //         console.error(err);
+    //         return res.status(500).json({ error: err });
+    //     }
+    //     res.status(201).json({ message: 'Recensione creata con successo' });
+    // });
 }
 
 function store(req, res) {
