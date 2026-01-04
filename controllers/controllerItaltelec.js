@@ -38,24 +38,15 @@ function show(req, res) {
     antenne.id = ?
     `;
 
-    const reviewsSql = `
-    SELECT reviews.*
-    FROM reviews
-    WHERE antenna_id = ?
-    `;
-
     connection.query(antenneSql, [id], (err, antenneResults) => {
         if (err) return res.status(500).json({ error: 'Database query failed' });
         if (antenneResults.length === 0) return res.status(404).json({ error: 'Antenna non trovata' });
+
         const antenna = antenneResults[0];
 
-        connection.query(reviewsSql, [id], (err, reviewsResults) => {
-            if (err) return res.status(500).json({ error: 'Database query failed' });
-            antenna.reviews = reviewsResults;
-            res.json({
-                ...antenna,
-                imagepath: antenna.immagine ? process.env.DB_PATH + antenna.immagine : null
-            });
+        res.json({
+            ...antenna,
+            imagepath: antenna.immagine ? process.env.DB_PATH + antenna.immagine : null
         });
     });
 }
