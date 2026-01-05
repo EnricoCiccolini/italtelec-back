@@ -5,6 +5,7 @@ function index(req, res) {
     const paramsResarc = []
     const { resarc } = req.query
     console.log(resarc)
+
     let sql = `
    SELECT 
     antenne.*
@@ -17,12 +18,29 @@ function index(req, res) {
     }
 
     sql += ` GROUP BY antenne.id`
+
     connection.query(sql, paramsResarc, (err, results) => {
         if (err) return res.status(500).json({ error: err })
-        res.json(results.map(result => ({
+
+        // Calcola metadata
+        const totalObjects = results.length
+        const totalPages = Math.ceil(totalObjects / 6)
+
+        // Aggiungi la chiave page ad ogni oggetto
+        const data = results.map((result, index) => ({
             ...result,
-            imagepath: result.immagine ? process.env.DB_PATH + result.immagine : null
-        })))
+            imagepath: result.immagine ? process.env.DB_PATH + result.immagine : null,
+            page: Math.floor((index / 6) + 1)
+        }))
+
+        // Risposta con data e metadata
+        res.json({
+            data: data,
+            metadata: {
+                totalObjects: totalObjects,
+                totalPages: totalPages
+            }
+        })
     })
 }
 
